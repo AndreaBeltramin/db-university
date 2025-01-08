@@ -19,9 +19,9 @@ WHERE `cfu` > 10
 3. Selezionare tutti gli studenti che hanno più di 30 anni
 
 ```sql
- SELECT *
+ SELECT *, TIMESTAMPDIFF(year, `date_of_birth`, CURDATE()) AS years_old
  FROM `students`
- WHERE YEAR (`date_of_birth`) <= 1995
+ WHERE TIMESTAMPDIFF(year, `date_of_birth`, CURDATE()) > 30
    ;
 ```
 
@@ -59,7 +59,7 @@ WHERE `level` = 'magistrale'
 7. Da quanti dipartimenti è composta l'università? (12)
 
 ```sql
-SELECT *
+SELECT COUNT(`id`)
 FROM `departments`
 ;
 ```
@@ -67,9 +67,9 @@ FROM `departments`
 8. Quanti sono gli insegnanti che non hanno un numero di telefono? (50)
 
 ```sql
-SELECT *
+SELECT COUNT(`id`)
 FROM `teachers`
-WHERE `phone` IS NOT NULL
+WHERE `phone` IS NULL
 ;
 ```
 
@@ -77,13 +77,13 @@ WHERE `phone` IS NOT NULL
    degree_id, inserire un valore casuale)
 
 ```sql
-INSERT INTO `students` (`degree_id`, `name`, `surname`, `date_of_birth`, `fiscal_code`, `enrolment_date`, `email`) VALUES ('40', 'Andrea', 'Beltramin', '1999-12-08', 'BLTNDR99T08D325U', '2025-01-07', 'andreabeltra99@gmail.com');
+INSERT INTO `students` (`degree_id`, `name`, `surname`, `date_of_birth`, `fiscal_code`, `enrolment_date`, `email`) VALUES (40, 'Andrea', 'Beltramin', '1999-12-08', 'BLTNDR99T08D325U', '2025-01-07', 123456, 'andreabeltra99@gmail.com');
 ```
 
-10. Cambiare il numero dell’ufficio del professor Pietro Rizzo in 126
+10. Cambiare il numero dell' ufficio del professor Pietro Rizzo in 126
 
 ```sql
-UPDATE `teachers` SET `office_address` = 'Contrada Santoro 126 Appartamento 30' WHERE (`id` = '58');
+UPDATE `teachers` SET `office_number` = 126 WHERE `id` = 58;
 ```
 
 11. Eliminare dalla tabella studenti il record creato precedentemente al punto 9
