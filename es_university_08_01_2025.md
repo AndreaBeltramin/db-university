@@ -14,14 +14,10 @@ WHERE `degrees`.`name` = 'Corso di Laurea in Economia'
 2. Selezionare tutti i Corsi di Laurea Magistrale del Dipartimento di Neuroscienze
 
 ```sql
-SELECT
-	`departments`.`name` AS `department_name`,
-    `degrees`.*
-FROM `departments`
-INNER JOIN `degrees`
-ON `degrees`.`department_id` = `departments`.`id`
+SELECT *
+FROM `degrees`
 WHERE `department_id` = 7
-AND `degrees`.`level` = 'magistrale'
+AND `level` = 'magistrale'
 ;
 ```
 
@@ -33,7 +29,7 @@ SELECT
 	`course_teacher`.*
 FROM `courses`
 INNER JOIN `course_teacher`
-ON `courses`.`id` = `course_teacher`.`teacher_id`
+ON `courses`.`id` = `course_teacher`.`course_id`
 WHERE `teacher_id` = 44
 ;
 ```
@@ -65,15 +61,30 @@ SELECT
 FROM `degrees`
 INNER JOIN `courses`
 ON `courses`.`degree_id` = `degrees`.`id`
+INNER JOIN `course_teacher`
+ON `courses`.`id` = `course_teacher`.`course_id`
 INNER JOIN `teachers`
-ON `teachers`.`id` = `courses`.`id`
+ON `teachers`.`id` = `course_teacher`.`teacher_id`
 ;
 ```
 
 6. Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica (54)
 
 ```sql
-
+SELECT DISTINCT
+    `teachers`.*,
+    `departments`.*
+FROM `degrees`
+INNER JOIN `courses`
+ON `courses`.`degree_id` = `degrees`.`id`
+INNER JOIN `course_teacher`
+ON `courses`.`id` = `course_teacher`.`course_id`
+INNER JOIN `teachers`
+ON `teachers`.`id` = `course_teacher`.`teacher_id`
+INNER JOIN `departments`
+ON `departments`.`id` = `degrees`.`department_id`
+WHERE `departments`.`name` = "Dipartimento di Matematica"
+;
 ```
 
 7. BONUS: Selezionare per ogni studente il numero di tentativi sostenuti
